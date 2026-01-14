@@ -22,7 +22,7 @@ function Input({
           }
           placeholder={placeholder}
           value={value}
-          onChange={(e) => onChange(e.target.value)}
+          onChange={onChange}
           className="w-full bg-transparent outline-none"
         />
         {type === "password" && (
