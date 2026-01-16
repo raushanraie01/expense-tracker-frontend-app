@@ -1,7 +1,7 @@
 import React from "react";
 
 function Expense() {
-  return <div>Expense</div>;
+  return <div>Saloni</div>;
 }
 
 export default Expense;
