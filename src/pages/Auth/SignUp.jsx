@@ -1,9 +1,15 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import AuthLayout from "../../components/layout/AuthLayout";
 import { Link, useNavigate } from "react-router-dom";
 import Input from "../../components/Inputs/Input";
 import { isValidEmail } from "../../utils/helper";
 import ProfilePhotoSelector from "../../components/Inputs/ProfilePhotoSelector";
+import api from "../../utils/axiosInstance.js";
+import { API_PATHS, BASE_URL } from "../../utils/apiPaths";
+import { userContext } from "../../context/UserContext.jsx";
+import uploadImage from "../../utils/uploadImage.js";
+
+//SignUp Components
 function SignUp() {
   const [profilePic, setProfilePic] = useState(null);
   const [fullName, setFullName] = useState("");
@@ -11,6 +17,7 @@ function SignUp() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { updateUser } = useContext(userContext);
 
   async function handleSignUp(e) {
     e.preventDefault();
@@ -25,7 +32,7 @@ function SignUp() {
       setError("Please enter the password.");
       return;
     }
-    if (password.length < 8) {
+    if (password.length < 5) {
       setError("Password must be at least 8 characters");
       return;
     }
@@ -37,6 +44,32 @@ function SignUp() {
     setError("");
 
     //SignUp API Call
+    try {
+      const formData = new FormData();
+      formData.append("fullName", fullName);
+      formData.append("email", email);
+      formData.append("password", password);
+      if (profilePic) {
+        formData.append("profileImageUrl", profilePic); // 🔑 KEY NAME MATTERS
+      }
+
+      const response = await api.post(API_PATHS.AUTH.REGISTER, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      const { token, createdUser } = response.data;
+      updateUser(createdUser);
+      localStorage.setItem("token", token);
+      navigate("/dashboard");
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        setError(error.response.data.message);
+      } else {
+        setError("Something went wrong. Please try again later");
+      }
+    }
   }
 
   return (
@@ -52,29 +85,23 @@ function SignUp() {
             <Input
               type="text"
               value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
+              onChange={setFullName}
               placeholder="abc xyz"
               label="Full Name"
             />
             <Input
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={setEmail}
               placeholder="abc@xyz.com"
               label="Email"
             />
-            {/* <Input
-              type="file"
-              value={profilePic}
-              onChange={(e) => setProfilePic(e.target)}
-              placeholder="Select your Profile Pic."
-              label="Profile Photo"
-            /> */}
+
             <div className="col-span-2">
               <Input
                 type="password"
                 value={password}
-                onChange={({ target }) => setPassword(target.value)}
+                onChange={setPassword}
                 placeholder="Min 8 char..."
                 label="Password"
               />

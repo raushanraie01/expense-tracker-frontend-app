@@ -1,31 +1,56 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import AuthLayout from "../../components/layout/AuthLayout";
 import Input from "../../components/Inputs/Input";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { isValidEmail } from "../../utils/helper";
+import api from "../../utils/axiosInstance";
+import { API_PATHS } from "../../utils/apiPaths";
+import { userContext } from "../../context/UserContext.jsx";
+
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const handleLogin = (e) => {
+  const navigate = useNavigate();
+  const { updateUser } = useContext(userContext);
+
+  const handleLogin = async (e) => {
     e.preventDefault();
+    try {
+      if (!isValidEmail(email)) {
+        setError("Please enter a valid email address.");
+        return;
+      }
+      if (!password) {
+        setError("Please enter the password.");
+        return;
+      }
+      // if (password.length < 5) {
+      //   setError("Password must be at least 8 characters");
+      //   return;
+      // }
 
-    if (!isValidEmail(email)) {
-      setError("Please enter a valid email address.");
-      return;
-    }
-    if (!password) {
-      setError("Please enter the password.");
-      return;
-    }
-    if (password.length < 8) {
-      setError("Password must be at least 8 characters");
-      return;
-    }
+      setError("");
 
-    setError("");
+      //Login API call
 
-    //Login API call
+      const response = await api.post(API_PATHS.AUTH.LOGIN, {
+        email,
+        password,
+      });
+      const { token, user } = response.data;
+      if (token) {
+        localStorage.setItem("token", token);
+        updateUser(user);
+        navigate("/dashboard");
+      }
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        setError(error.response.data.message);
+      } else {
+        setError("Something went wrong. Please try again later");
+      }
+    }
   };
   return (
     <AuthLayout>
