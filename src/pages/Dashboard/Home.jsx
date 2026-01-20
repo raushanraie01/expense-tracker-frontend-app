@@ -7,7 +7,7 @@ import RecentTransactions from "../../components/Dashboard/RecentTransactions.js
 import FinanceOverview from "../../components/Dashboard/FinanceOverview.jsx";
 import ExpenseTransaction from "../../components/Dashboard/ExpenseTransaction.jsx";
 import Last30DaysExpenses from "../../components/Dashboard/Last30DaysExpenses.jsx";
-import { useUserAuth } from "../../hooks/UseUserAuth.jsx";
+import { useUserAuth } from "../../hooks/useUserAuth.jsx";
 import { useNavigate } from "react-router-dom";
 import api from "../../utils/axiosInstance.js";
 import { API_PATHS } from "../../utils/apiPaths.js";
