@@ -1,5 +1,6 @@
-export const BASE_URL = "https://expense-tracker-backend-app-two.vercel.app";
-
+// export const BASE_URL = "https://expense-tracker-backend-app-two.vercel.app";
+export const BASE_URL = "http://localhost:5000";
+// https://expense-tracker-backend-app-two.vercel.app/api/v1
 export const API_PATHS = {
   AUTH: {
     LOGIN: "/api/v1/auth/login",

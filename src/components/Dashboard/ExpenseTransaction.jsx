@@ -12,9 +12,9 @@ function ExpenseTransaction({ transactions, onSeeMore }) {
         </button>
       </div>
       <div className="mt-6">
-        {transactions?.slice(0, 5)?.map((item, index) => (
+        {transactions?.slice(0, 5)?.map((item) => (
           <TransactionInfoCard
-            key={item._id}
+            id={item._id}
             title={item.category}
             icon={item.icon}
             date={moment(item.date).format("DD MM YYYY")}

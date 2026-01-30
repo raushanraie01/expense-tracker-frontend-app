@@ -21,7 +21,6 @@ function Home() {
   const [dashboardData, setDashboardData] = useState(null);
   const [loading, setLoading] = useState(false);
   const { user } = useContext(userContext);
-  console.log("dashboardData", dashboardData);
   const fetchDashboardData = async () => {
     if (loading) return;
     setLoading(true);
