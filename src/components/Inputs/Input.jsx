@@ -20,11 +20,13 @@ function Input({
           type={
             type === "password" ? (showPassword ? "text" : "password") : type
           }
+          name={type}
           placeholder={placeholder}
           value={value}
           onChange={(e) => onChange(e.target.value)}
           className="w-full bg-transparent outline-none"
         />
+
         {type === "password" && (
           <>
             {showPassword ? (

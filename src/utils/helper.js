@@ -24,8 +24,10 @@ export const addThousandsSeperator = (num) => {
 
 export const prepareExpenseChartData = (data = []) => {
   const chartData = data.map((item) => ({
+    month: moment(item?.date).format("DD MMM"),
     category: item?.category,
     amount: item?.amount,
+    key: item._id,
   }));
 
   return chartData;
@@ -39,6 +41,7 @@ export const prepareIncomeChartData = (data = []) => {
     month: moment(item?.date).format("DD MMM"),
     amount: item?.amount,
     source: item?.source,
+    key: item._id,
   }));
   return chartData;
 };

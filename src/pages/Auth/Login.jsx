@@ -61,7 +61,7 @@ function Login() {
         </p>
         <form onSubmit={handleLogin}>
           <Input
-            type="text"
+            type="email"
             value={email}
             onChange={setEmail}
             placeholder="abc@gmail.com"

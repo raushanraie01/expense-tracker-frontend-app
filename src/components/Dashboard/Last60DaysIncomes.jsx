@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { prepareExpenseChartData } from "../../utils/helper.js";
+import { prepareIncomeChartData } from "../../utils/helper.js";
 import CustomBarChart from "../Charts/CustomBarChart.jsx";
 
-function Last30DaysExpenses({ data }) {
+function Last60DaysIncomes({ data }) {
   const [chartData, setChartData] = useState([]);
   useEffect(() => {
-    const result = prepareExpenseChartData(data);
+    const result = prepareIncomeChartData(data);
     setChartData(result);
     return () => {};
   }, [data]);
-  console.log("X", chartData);
   return (
     <div className="card col-span-1">
       <div className="flex items-center justify-between">
-        <h5 className="text-lg">Last 30 Days Expenses</h5>
+        <h5 className="text-lg">Last 60 Days Incomes</h5>
       </div>
       <div className="mt-10">
         <CustomBarChart data={chartData} />
@@ -22,4 +21,4 @@ function Last30DaysExpenses({ data }) {
   );
 }
 
-export default Last30DaysExpenses;
+export default Last60DaysIncomes;

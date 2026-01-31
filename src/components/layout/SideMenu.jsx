@@ -4,15 +4,18 @@ import { userContext } from "../../context/UserContext.jsx";
 import { useNavigate } from "react-router-dom";
 import CharAvatar from "../Card/CharAvatar.jsx";
 
-function SideMenu({ activeMenu }) {
+function SideMenu({ activeMenu, setActiveMenu }) {
   const { user, cleanUser } = useContext(userContext);
   const navigate = useNavigate();
 
-  function handleClick(route) {
-    if (route === "logout") {
+  function handleClick(route, activeLabel) {
+    if (route === "/logout") {
       handleLogout();
+      navigate("/login");
       return;
     }
+
+    setActiveMenu(activeLabel);
     navigate(route);
   }
 
@@ -22,7 +25,7 @@ function SideMenu({ activeMenu }) {
     navigate("/login");
   };
   return (
-    <div className="w-64 h-[calc(100vh-61px)] bg-white border-r border-gray-200/50 sticky top-[61px]">
+    <div className="w-64 h-[calc(100vh-61px)] bg-white border-r border-gray-200/50 sticky top-15.25">
       <div className="flex flex-col items-center justify-center gap-3 mt-3 mb-7 ">
         {user?.profileImageUrl ? (
           <img
@@ -46,7 +49,7 @@ function SideMenu({ activeMenu }) {
         <button
           key={`menu${index}`}
           className={`w-full flex  items-center gap-4 text-[15px] ${activeMenu == item.label ? "text-white bg-primary " : ""} py-3 px-6 rounded-lg mb-3`}
-          onClick={() => handleClick(item.path)}
+          onClick={() => handleClick(item.path, item.label)}
         >
           <item.icon className="text-xl" />
           {item.label}
